@@ -1,0 +1,76 @@
+<div class="shell">
+  <header class="topbar">
+    <h1>Admin Dashboard</h1>
+    <a routerLink="/" class="link">Home</a>
+  </header>
+
+  <p class="error" *ngIf="error()">{{ error() }}</p>
+
+  <section class="card">
+    <h2>Users</h2>
+    <div class="table">
+      <div class="row head">
+        <div>Email</div><div>Role</div><div>Name</div><div>Status</div><div>Actions</div>
+      </div>
+      <div class="row" *ngFor="let u of users()">
+        <div>{{ u.email }}</div>
+        <div>{{ u.role }}</div>
+        <div>{{ u.name }}</div>
+        <div>
+          <span *ngIf="u.blocked" class="pill pill-red">Blocked</span>
+          <span *ngIf="!u.blocked" class="pill pill-green">Active</span>
+          <span *ngIf="u.role==='ROLE_DRIVER'" class="pill" [class.pill-green]="u.driverVerified" [class.pill-yellow]="!u.driverVerified">Driver {{ u.driverVerified ? 'Verified' : 'Unverified' }}</span>
+        </div>
+        <div class="actions">
+          <button (click)="blockUser(u, !u.blocked)">{{ u.blocked ? 'Unblock' : 'Block' }}</button>
+          <button *ngIf="u.role==='ROLE_DRIVER' && !u.driverVerified" (click)="verifyDriver(u)">Verify</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Rides</h2>
+    <div class="table">
+      <div class="row head">
+        <div>Route</div><div>Date</div><div>Seats</div><div>Fare</div>
+      </div>
+      <div class="row" *ngFor="let r of rides()">
+        <div>{{ r.source }} → {{ r.destination }}</div>
+        <div>{{ r.departureTime | date:'medium' }}</div>
+        <div>{{ r.availableSeats }}</div>
+        <div>₹{{ r.farePerSeat }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Bookings</h2>
+    <div class="table">
+      <div class="row head">
+        <div>Passenger</div><div>Ride</div><div>Seats</div><div>Status</div>
+      </div>
+      <div class="row" *ngFor="let b of bookings()">
+        <div>{{ b.passenger?.email }}</div>
+        <div>{{ b.ride?.source }} → {{ b.ride?.destination }}</div>
+        <div>{{ b.seatsBooked }}</div>
+        <div>{{ b.status }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Payments</h2>
+    <div class="table">
+      <div class="row head">
+        <div>Amount</div><div>Status</div><div>Date</div>
+      </div>
+      <div class="row" *ngFor="let p of payments()">
+        <div>₹{{ p.amount }}</div>
+        <div>{{ p.status }}</div>
+        <div>{{ p.createdAt | date:'medium' }}</div>
+      </div>
+    </div>
+  </section>
+</div>
+

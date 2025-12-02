@@ -1,0 +1,59 @@
+.auth-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  background: radial-gradient(circle at top left, #0f172a, #020617);
+  color: #e5e7eb;
+}
+
+.brand-panel {
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #22c55e, #0ea5e9);
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.brand-panel h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.brand-panel p {
+  max-width: 24rem;
+  color: #9ca3af;
+}
+
+.form-panel {
+  background: #f9fafb;
+  color: #111827;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .auth-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .brand-panel {
+    display: none;
+  }
+}
+
+

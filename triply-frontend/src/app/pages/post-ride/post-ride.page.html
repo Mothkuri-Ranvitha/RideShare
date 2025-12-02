@@ -1,0 +1,67 @@
+<div class="shell">
+  <header class="topbar">
+    <h1>Post a Ride</h1>
+    <a routerLink="/app" class="link">Back to Dashboard</a>
+  </header>
+
+  <section class="card">
+    <div class="grid">
+      <div class="field">
+        <label>From</label>
+        <input type="text" [(ngModel)]="source" placeholder="e.g., Mumbai" />
+      </div>
+      <div class="field">
+        <label>To</label>
+        <input type="text" [(ngModel)]="destination" placeholder="e.g., Pune" />
+      </div>
+      <div class="field">
+        <label>Date</label>
+        <input type="date" [(ngModel)]="date" />
+      </div>
+      <div class="field">
+        <label>Time</label>
+        <input type="time" [(ngModel)]="time" />
+      </div>
+      <div class="field">
+        <label>Available Seats</label>
+        <input type="number" [(ngModel)]="availableSeats" min="1" />
+      </div>
+      <div class="field">
+        <label>Fare per seat (optional)</label>
+        <input type="number" [(ngModel)]="farePerSeat" min="1" />
+      </div>
+    </div>
+
+    <details class="coords">
+      <summary>Optional: Add coordinates for dynamic fare</summary>
+      <div class="grid">
+        <div class="field">
+          <label>From Lat</label>
+          <input type="number" [(ngModel)]="sourceLat" step="0.000001" />
+        </div>
+        <div class="field">
+          <label>From Lng</label>
+          <input type="number" [(ngModel)]="sourceLng" step="0.000001" />
+        </div>
+        <div class="field">
+          <label>To Lat</label>
+          <input type="number" [(ngModel)]="destLat" step="0.000001" />
+        </div>
+        <div class="field">
+          <label>To Lng</label>
+          <input type="number" [(ngModel)]="destLng" step="0.000001" />
+        </div>
+      </div>
+      <p class="hint">If fare is empty and coordinates are provided, the system will estimate fare based on distance.</p>
+    </details>
+
+    <button class="submit" (click)="submit()">
+      <span *ngIf="!loading()">Post Ride</span>
+      <span *ngIf="loading()">Posting…</span>
+    </button>
+
+    <p class="msg error" *ngIf="error()">{{ error() }}</p>
+    <p class="msg info" *ngIf="info()">{{ info() }}</p>
+  </section>
+</div>
+

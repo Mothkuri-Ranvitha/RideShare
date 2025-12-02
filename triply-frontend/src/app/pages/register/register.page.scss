@@ -1,0 +1,159 @@
+.card {
+  width: 100%;
+  max-width: 520px;
+  padding: 2.25rem 2rem;
+  border-radius: 1.25rem;
+  background: #ffffff;
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.15),
+    0 0 0 1px rgba(15, 23, 42, 0.03);
+}
+
+h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 1.4rem;
+}
+
+.role-toggle {
+  display: inline-flex;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: #f3f4f6;
+  margin-bottom: 1.5rem;
+}
+
+.role-toggle button {
+  border-radius: 999px;
+  border: none;
+  padding: 0.45rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4b5563;
+  background: transparent;
+  cursor: pointer;
+}
+
+.role-toggle button.active {
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.4);
+  color: #111827;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+input {
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #22c55e;
+  box-shadow: 0 0 0 1px #22c55e, 0 0 0 4px rgba(34, 197, 94, 0.14);
+}
+
+.password-row {
+  align-items: flex-start;
+}
+
+.password-row .ghost {
+  margin-top: 1.55rem;
+  margin-left: 0.75rem;
+}
+
+.ghost {
+  border-radius: 0.8rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.85rem;
+  background: #f9fafb;
+  cursor: pointer;
+  color: #111827;
+}
+
+.ghost:hover {
+  background: #f3f4f6;
+}
+
+.driver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+
+button[type='submit'] {
+  width: 100%;
+  margin-top: 0.75rem;
+  border-radius: 0.9rem;
+  border: none;
+  padding: 0.8rem 1rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #22c55e, #0ea5e9);
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.05s ease;
+}
+
+button[type='submit']:disabled {
+  opacity: 0.75;
+  cursor: default;
+}
+
+button[type='submit']:not(:disabled):active {
+  transform: translateY(1px);
+}
+
+.error {
+  margin-top: 0.75rem;
+  color: #b91c1c;
+  font-size: 0.85rem;
+}
+
+.info {
+  margin-top: 0.5rem;
+  color: #0f766e;
+  font-size: 0.85rem;
+}
+
+.switch {
+  margin-top: 1.1rem;
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+
+.switch a {
+  color: #0ea5e9;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.switch a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding-inline: 1.5rem;
+  }
+}
+
+

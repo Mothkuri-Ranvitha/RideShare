@@ -1,0 +1,74 @@
+<div class="shell" *ngIf="user() as u">
+  <header class="topbar">
+    <div class="title">
+      <span class="badge">{{ u.role }}</span>
+      <h1>Hi {{ u.name || u.email }}, welcome to Triply</h1>
+      <p>Search available rides or manage your journeys.</p>
+    </div>
+
+    <button class="logout" (click)="logout()">Log out</button>
+  </header>
+
+  <section class="search-card">
+    <div class="field">
+      <label for="from">From</label>
+      <input id="from" type="text" [(ngModel)]="searchSource" />
+    </div>
+
+    <div class="field">
+      <label for="to">To</label>
+      <input id="to" type="text" [(ngModel)]="searchDestination" />
+    </div>
+
+    <div class="field">
+      <label for="date">Date</label>
+      <input id="date" type="date" [(ngModel)]="searchDate" />
+    </div>
+
+    <div class="field">
+      <label>Min Fare</label>
+      <input type="number" [(ngModel)]="minFare" />
+    </div>
+
+    <div class="field">
+      <label>Max Fare</label>
+      <input type="number" [(ngModel)]="maxFare" />
+    </div>
+
+    <div class="field">
+      <label>Vehicle Model</label>
+      <input type="text" [(ngModel)]="vehicleModel" />
+    </div>
+
+    <button (click)="search()">
+      <span *ngIf="!loadingRides()">Search rides</span>
+      <span *ngIf="loadingRides()">Searching…</span>
+    </button>
+  </section>
+
+  <section class="rides" *ngIf="rides().length">
+    <h2>Matching rides</h2>
+    <div class="grid">
+      <article class="ride" *ngFor="let r of rides()">
+        <div class="route">
+          <h3>{{ r.source }} → {{ r.destination }}</h3>
+          <p>{{ r.departureTime | date: 'medium' }}</p>
+        </div>
+        <div class="meta">
+          <span>{{ r.availableSeats }} seats</span>
+          <span>₹{{ r.farePerSeat | number: '1.0-0' }} / seat</span>
+        </div>
+        <div class="booking" *ngIf="r.availableSeats > 0">
+          <input type="number" min="1" [max]="r.availableSeats" [(ngModel)]="seatsToBook[r.id]" placeholder="Seats" />
+          <button class="book" (click)="book(r.id)">Book</button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section *ngIf="user()?.role === 'ROLE_DRIVER'" style="margin-top:1.5rem;">
+    <a routerLink="/post-ride" class="cta">Post a new ride</a>
+  </section>
+</div>
+
+

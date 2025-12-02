@@ -1,0 +1,110 @@
+<div class="card">
+  <h2>Create your Triply account</h2>
+  <p class="subtitle">Onboard as a driver or passenger in a couple of steps.</p>
+
+  <form (ngSubmit)="submit()">
+    <div class="role-toggle">
+      <button type="button" [class.active]="role === 'PASSENGER'" (click)="role = 'PASSENGER'">
+        Passenger
+      </button>
+      <button type="button" [class.active]="role === 'DRIVER'" (click)="role = 'DRIVER'">
+        Driver
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="name">Full name</label>
+      <input id="name" type="text" [(ngModel)]="name" name="name" />
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" />
+    </div>
+
+    <div class="field">
+      <label for="phone">Phone</label>
+      <input id="phone" type="tel" [(ngModel)]="phone" name="phone" />
+    </div>
+
+    <div class="field password-row">
+      <div>
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+        />
+      </div>
+      <button class="ghost" type="button" (click)="generatePassword()">
+        Generate strong password
+      </button>
+    </div>
+
+    <div class="field">
+      <label for="confirm">Confirm password</label>
+      <input
+        id="confirm"
+        type="password"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+      />
+    </div>
+
+    <div *ngIf="role === 'DRIVER'" class="driver-grid">
+      <div class="field">
+        <label for="vehicleModel">Vehicle model</label>
+        <input
+          id="vehicleModel"
+          type="text"
+          [(ngModel)]="vehicleModel"
+          name="vehicleModel"
+        />
+      </div>
+
+      <div class="field">
+        <label for="licensePlate">License plate</label>
+        <input
+          id="licensePlate"
+          type="text"
+          [(ngModel)]="licensePlate"
+          name="licensePlate"
+        />
+      </div>
+
+      <div class="field">
+        <label for="capacity">Seats available</label>
+        <input
+          id="capacity"
+          type="number"
+          min="1"
+          [(ngModel)]="capacity"
+          name="capacity"
+        />
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="loading()">
+      <span *ngIf="!loading()">Create account</span>
+      <span *ngIf="loading()">Creating…</span>
+    </button>
+
+    <p *ngIf="error()" class="error">
+      {{ error() }}
+    </p>
+    <p *ngIf="info()" class="info">
+      {{ info() }}
+    </p>
+
+    <p class="switch">
+      Already have an account?
+      <a routerLink="/login">Sign in</a>
+    </p>
+    <p class="switch">
+      <a routerLink="/">Back to home</a>
+    </p>
+  </form>
+</div>
+
+

@@ -1,0 +1,41 @@
+<div class="card">
+  <h2>Welcome back</h2>
+  <p class="subtitle">Sign in to manage your rides and bookings.</p>
+
+  <form (ngSubmit)="submit()">
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" type="email" [(ngModel)]="email" name="email" required />
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        required
+      />
+    </div>
+
+    <button type="submit" [disabled]="loading()">
+      <span *ngIf="!loading()">Sign in</span>
+      <span *ngIf="loading()">Signing in…</span>
+    </button>
+
+    <p *ngIf="error()" class="error">
+      {{ error() }}
+    </p>
+
+    <p class="switch">
+      New here?
+      <a routerLink="/register">Create an account</a>
+    </p>
+    <p class="switch">
+      <a routerLink="/">Back to home</a>
+    </p>
+  </form>
+</div>
+
+
