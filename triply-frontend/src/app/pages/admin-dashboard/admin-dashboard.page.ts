@@ -39,6 +39,7 @@ export class AdminDashboardPageComponent {
   bookings = signal<Booking[]>([]);
   payments = signal<Payment[]>([]);
   error = signal<string | null>(null);
+  banner = signal<string | null>(null);
   editingUser = signal<User | null>(null);
   editModel = {
     name: '',
@@ -62,6 +63,38 @@ export class AdminDashboardPageComponent {
 
   // id selected in the top edit bar
   selectedUserId: number | null = null;
+
+  // top nav tabs
+  activeTab: 'team' | 'drivers' | 'users' | 'rides' | 'requests' = 'users';
+
+  // derived counts
+  countTeam() { return this.users().filter(u => u.role === 'ROLE_ADMIN').length; }
+  countDrivers() { return this.users().filter(u => u.role === 'ROLE_DRIVER').length; }
+  countUsers() { return this.users().filter(u => u.role === 'ROLE_PASSENGER').length; }
+  countRides() { return this.rides().length; }
+  countRequests() { return this.users().filter(u => u.role === 'ROLE_DRIVER' && !u.driverVerified).length; }
+
+  // data shown for current tab
+  displayUsers(): User[] {
+    switch (this.activeTab) {
+      case 'team':
+        return this.users().filter(u => u.role === 'ROLE_ADMIN');
+      case 'drivers':
+        return this.users().filter(u => u.role === 'ROLE_DRIVER');
+      case 'users':
+        return this.users().filter(u => u.role === 'ROLE_PASSENGER');
+      case 'requests':
+        return this.users().filter(u => u.role === 'ROLE_DRIVER' && !u.driverVerified);
+      default:
+        return this.users();
+    }
+  }
+
+  setTab(tab: 'team' | 'drivers' | 'users' | 'rides' | 'requests') {
+    this.activeTab = tab;
+    this.editingUser.set(null);
+    this.selectedUserId = null;
+  }
 
   refreshAll() {
     this.error.set(null);
@@ -145,9 +178,12 @@ export class AdminDashboardPageComponent {
       return;
     }
     this.http.delete(`http://localhost:8080/api/admin/users/${u.id}`).subscribe({
-      next: () => this.refreshAll(),
+      next: () => {
+        this.refreshAll();
+        this.banner.set('Deleted.');
+        setTimeout(() => this.banner.set(null), 2500);
+      },
       error: () => this.error.set('Failed to delete user')
     });
   }
 }
-

@@ -14,9 +14,28 @@
     <a routerLink="/" class="link">Back to site</a>
   </header>
 
+  <p class="banner success" *ngIf="banner()">{{ banner() }}</p>
   <p class="error" *ngIf="error()">{{ error() }}</p>
 
-  <section class="card">
+  <nav class="tabs">
+    <button class="tab" [class.active]="activeTab==='team'" (click)="setTab('team')">
+      Team ({{ countTeam() }})
+    </button>
+    <button class="tab" [class.active]="activeTab==='drivers'" (click)="setTab('drivers')">
+      Drivers ({{ countDrivers() }})
+    </button>
+    <button class="tab" [class.active]="activeTab==='users'" (click)="setTab('users')">
+      Users ({{ countUsers() }})
+    </button>
+    <button class="tab" [class.active]="activeTab==='rides'" (click)="setTab('rides')">
+      Rides ({{ countRides() }})
+    </button>
+    <button class="tab" [class.active]="activeTab==='requests'" (click)="setTab('requests')">
+      Requests ({{ countRequests() }}) <span class="dot" *ngIf="countRequests() > 0"></span>
+    </button>
+  </nav>
+
+  <section class="card" *ngIf="activeTab!=='rides'">
     <header class="section-header">
       <div class="section-title">
         <img
@@ -24,11 +43,11 @@
           alt="Users"
         />
         <div>
-          <h2>Users</h2>
+          <h2>{{ activeTab==='team' ? 'Team' : activeTab==='drivers' ? 'Drivers' : activeTab==='requests' ? 'Requests' : 'Users' }}</h2>
           <p>Select a user at the top to edit or delete.</p>
-        </div>
       </div>
-      <div class="edit-toolbar" *ngIf="users().length">
+    </div>
+    <div class="edit-toolbar" *ngIf="users().length">
         <select [(ngModel)]="selectedUserId" name="selectedUser">
           <option [ngValue]="null">Select user…</option>
           <option *ngFor="let u of users()" [ngValue]="u.id">
@@ -43,7 +62,7 @@
       <div class="row head">
         <div>Email</div><div>Role</div><div>Name</div><div>Status</div><div>Actions</div>
       </div>
-      <div class="row" *ngFor="let u of users()">
+      <div class="row" *ngFor="let u of displayUsers()">
         <div>{{ u.email }}</div>
         <div>{{ u.role }}</div>
         <div>{{ u.name }}</div>
@@ -108,7 +127,7 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" *ngIf="activeTab==='rides'">
     <header class="section-header">
       <div class="section-title">
         <img
@@ -133,56 +152,4 @@
       </div>
     </div>
   </section>
-
-  <section class="card">
-    <header class="section-header">
-      <div class="section-title">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/906/906175.png"
-          alt="Bookings"
-        />
-        <div>
-          <h2>Bookings</h2>
-          <p>Track reservations for each ride.</p>
-        </div>
-      </div>
-    </header>
-    <div class="table">
-      <div class="row head">
-        <div>Passenger</div><div>Ride</div><div>Seats</div><div>Status</div>
-      </div>
-      <div class="row" *ngFor="let b of bookings()">
-        <div>{{ b.passenger?.email }}</div>
-        <div>{{ b.ride?.source }} → {{ b.ride?.destination }}</div>
-        <div>{{ b.seatsBooked }}</div>
-        <div>{{ b.status }}</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="card">
-    <header class="section-header">
-      <div class="section-title">
-        <img
-          src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png"
-          alt="Payments"
-        />
-        <div>
-          <h2>Payments</h2>
-          <p>Payment records (placeholder for now).</p>
-        </div>
-      </div>
-    </header>
-    <div class="table">
-      <div class="row head">
-        <div>Amount</div><div>Status</div><div>Date</div>
-      </div>
-      <div class="row" *ngFor="let p of payments()">
-        <div>₹{{ p.amount }}</div>
-        <div>{{ p.status }}</div>
-        <div>{{ p.createdAt | date:'medium' }}</div>
-      </div>
-    </div>
-  </section>
 </div>
-
