@@ -1,13 +1,44 @@
 <div class="shell">
   <header class="topbar">
-    <h1>Admin Dashboard</h1>
-    <a routerLink="/" class="link">Home</a>
+    <div class="brand">
+      <img
+        class="brand-icon"
+        src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
+        alt="Admin icon"
+      />
+      <div>
+        <h1>Admin Dashboard</h1>
+        <p>Manage users, drivers, rides and platform activity.</p>
+      </div>
+    </div>
+    <a routerLink="/" class="link">Back to site</a>
   </header>
 
   <p class="error" *ngIf="error()">{{ error() }}</p>
 
   <section class="card">
-    <h2>Users</h2>
+    <header class="section-header">
+      <div class="section-title">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/1251/1251840.png"
+          alt="Users"
+        />
+        <div>
+          <h2>Users</h2>
+          <p>Select a user at the top to edit or delete.</p>
+        </div>
+      </div>
+      <div class="edit-toolbar" *ngIf="users().length">
+        <select [(ngModel)]="selectedUserId" name="selectedUser">
+          <option [ngValue]="null">Select user…</option>
+          <option *ngFor="let u of users()" [ngValue]="u.id">
+            {{ u.email }} ({{ u.role }})
+          </option>
+        </select>
+        <button type="button" (click)="startEditFromToolbar()">Edit</button>
+        <button type="button" class="danger" (click)="deleteFromToolbar()">Delete</button>
+      </div>
+    </header>
     <div class="table">
       <div class="row head">
         <div>Email</div><div>Role</div><div>Name</div><div>Status</div><div>Actions</div>
@@ -27,10 +58,69 @@
         </div>
       </div>
     </div>
+
+    <div class="edit-panel" *ngIf="editingUser() as eu">
+      <h3>Edit user: {{ eu.email }}</h3>
+      <form (ngSubmit)="saveEdit()">
+        <div class="edit-grid">
+          <label>
+            Name
+            <input type="text" [(ngModel)]="editModel.name" name="name" />
+          </label>
+          <label>
+            Phone
+            <input type="text" [(ngModel)]="editModel.phone" name="phone" />
+          </label>
+          <label>
+            Role
+            <select [(ngModel)]="editModel.role" name="role">
+              <option value="ROLE_ADMIN">Admin</option>
+              <option value="ROLE_DRIVER">Driver</option>
+              <option value="ROLE_PASSENGER">Passenger</option>
+            </select>
+          </label>
+          <label>
+            Blocked
+            <input type="checkbox" [(ngModel)]="editModel.blocked" name="blocked" />
+          </label>
+          <label>
+            Driver verified
+            <input type="checkbox" [(ngModel)]="editModel.driverVerified" name="driverVerified" />
+          </label>
+          <label>
+            Vehicle model
+            <input type="text" [(ngModel)]="editModel.vehicleModel" name="vehicleModel" />
+          </label>
+          <label>
+            License plate
+            <input type="text" [(ngModel)]="editModel.licensePlate" name="licensePlate" />
+          </label>
+          <label>
+            Capacity
+            <input type="number" min="1" [(ngModel)]="editModel.capacity" name="capacity" />
+          </label>
+        </div>
+        <div class="edit-actions">
+          <button type="submit">Save changes</button>
+          <button type="button" class="ghost" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
+    </div>
   </section>
 
   <section class="card">
-    <h2>Rides</h2>
+    <header class="section-header">
+      <div class="section-title">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/684/684908.png"
+          alt="Rides"
+        />
+        <div>
+          <h2>Rides</h2>
+          <p>Overview of active rides in the system.</p>
+        </div>
+      </div>
+    </header>
     <div class="table">
       <div class="row head">
         <div>Route</div><div>Date</div><div>Seats</div><div>Fare</div>
@@ -45,7 +135,18 @@
   </section>
 
   <section class="card">
-    <h2>Bookings</h2>
+    <header class="section-header">
+      <div class="section-title">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/906/906175.png"
+          alt="Bookings"
+        />
+        <div>
+          <h2>Bookings</h2>
+          <p>Track reservations for each ride.</p>
+        </div>
+      </div>
+    </header>
     <div class="table">
       <div class="row head">
         <div>Passenger</div><div>Ride</div><div>Seats</div><div>Status</div>
@@ -60,7 +161,18 @@
   </section>
 
   <section class="card">
-    <h2>Payments</h2>
+    <header class="section-header">
+      <div class="section-title">
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3514/3514491.png"
+          alt="Payments"
+        />
+        <div>
+          <h2>Payments</h2>
+          <p>Payment records (placeholder for now).</p>
+        </div>
+      </div>
+    </header>
     <div class="table">
       <div class="row head">
         <div>Amount</div><div>Status</div><div>Date</div>

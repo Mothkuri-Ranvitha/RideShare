@@ -54,4 +54,9 @@ public class RideController {
         List<Ride> rides = rideService.searchRide(source, destination, dateParam, minFare, maxFare, vehicleModel);
         return ResponseEntity.ok(rides);
     }
+
+    @GetMapping
+    public ResponseEntity<?> allRides() {
+        return ResponseEntity.ok(rideService.findAll());
+    }
 }

@@ -47,6 +47,19 @@ export class DashboardPageComponent {
     if (!this.auth.isLoggedIn()) {
       this.router.navigateByUrl('/login');
     }
+
+    // load initial available rides
+    this.loadingRides.set(true);
+    this.http.get<Ride[]>('http://localhost:8080/api/rides')
+      .subscribe({
+        next: (res) => {
+          this.loadingRides.set(false);
+          this.rides.set(res);
+        },
+        error: () => {
+          this.loadingRides.set(false);
+        }
+      });
   }
 
   logout() {

@@ -65,6 +65,10 @@ public class RideService {
                 .toList();
     }
 
+    public List<Ride> findAll() {
+        return rideRepository.findAll();
+    }
+
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Earth radius in km
         double dLat = Math.toRadians(lat2 - lat1);

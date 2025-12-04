@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 "/h2-console/**",
                                 "/error"
                         ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers.frameOptions().disable())

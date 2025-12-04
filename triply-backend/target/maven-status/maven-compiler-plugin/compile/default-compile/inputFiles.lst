@@ -7,6 +7,7 @@ E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\model\ERole.j
 E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\model\Payment.java
 E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\model\Ride.java
 E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\model\User.java
+E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\payload\requests\AdminUpdateUserRequest.java
 E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\payload\requests\LoginRequest.java
 E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\payload\requests\RegisterRequest.java
 E:\RideShare\triply-backend\src\main\java\com\triply\triplybackend\payload\requests\RideRequest.java

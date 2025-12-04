@@ -35,7 +35,12 @@ export class LoginPageComponent {
       .subscribe({
         next: () => {
           this.loading.set(false);
-          this.router.navigateByUrl('/app');
+          const u = this.auth.currentUser();
+          if (u && u.role === 'ROLE_ADMIN') {
+            this.router.navigateByUrl('/admin');
+          } else {
+            this.router.navigateByUrl('/app');
+          }
         },
         error: () => {
           this.loading.set(false);

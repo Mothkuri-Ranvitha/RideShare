@@ -7,9 +7,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import io.jsonwebtoken.Claims;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
 
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -31,14 +34,21 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = header.substring(7);
 
             if (jwtUtil.validate(token)) {
-                String email = jwtUtil.extractUsername(token);
+                Claims claims = jwtUtil.getClaims(token);
+                String email = claims.getSubject();
+                String role = claims.get("role", String.class);
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    SimpleGrantedAuthority authority =
+                            role != null ? new SimpleGrantedAuthority(role) : null;
+                    List<SimpleGrantedAuthority> authorities =
+                            authority != null ? Collections.singletonList(authority) : Collections.emptyList();
+
                     UsernamePasswordAuthenticationToken auth =
                             new UsernamePasswordAuthenticationToken(
-                                    email,                     // PRINCIPAL = email
+                                    email,   // principal = email
                                     null,
-                                    Collections.emptyList()    // no roles required
+                                    authorities
                             );
 
                     SecurityContextHolder.getContext().setAuthentication(auth);

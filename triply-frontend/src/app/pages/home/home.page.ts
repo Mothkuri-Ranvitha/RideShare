@@ -17,11 +17,6 @@ import { RouterModule } from '@angular/router';
         <a routerLink="/login" class="btn btn-primary">Sign In</a>
         <a routerLink="/register" class="btn btn-secondary">Create Account</a>
       </div>
-      
-      <div style="margin-top: 2rem; text-align: center; opacity: 0.8;">
-        <p>Backend: http://localhost:8080</p>
-        <p>Frontend: http://localhost:4200</p>
-      </div>
     </div>
   `,
   styles: [`

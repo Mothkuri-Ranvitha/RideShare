@@ -39,6 +39,17 @@ export class AdminDashboardPageComponent {
   bookings = signal<Booking[]>([]);
   payments = signal<Payment[]>([]);
   error = signal<string | null>(null);
+  editingUser = signal<User | null>(null);
+  editModel = {
+    name: '',
+    phone: '',
+    role: '',
+    blocked: false,
+    driverVerified: false,
+    vehicleModel: '',
+    licensePlate: '',
+    capacity: 1
+  };
 
   constructor() {
     const u = this.auth.currentUser();
@@ -48,6 +59,9 @@ export class AdminDashboardPageComponent {
     }
     this.refreshAll();
   }
+
+  // id selected in the top edit bar
+  selectedUserId: number | null = null;
 
   refreshAll() {
     this.error.set(null);
@@ -63,6 +77,77 @@ export class AdminDashboardPageComponent {
 
   verifyDriver(u: User) {
     this.http.post(`http://localhost:8080/api/admin/users/${u.id}/verify-driver`, {}).subscribe({ next: () => this.refreshAll() });
+  }
+
+  startEditFromToolbar() {
+    if (!this.selectedUserId) {
+      return;
+      }
+    const u = this.users().find(x => x.id === this.selectedUserId);
+    if (u) {
+      this.startEdit(u);
+    }
+  }
+
+  deleteFromToolbar() {
+    if (!this.selectedUserId) {
+      return;
+    }
+    const u = this.users().find(x => x.id === this.selectedUserId);
+    if (u) {
+      this.deleteUser(u);
+    }
+  }
+
+  startEdit(u: User) {
+    this.editingUser.set(u);
+    this.editModel = {
+      name: u.name ?? '',
+      phone: '',
+      role: u.role,
+      blocked: !!u.blocked,
+      driverVerified: !!u.driverVerified,
+      vehicleModel: u.vehicleModel ?? '',
+      licensePlate: u.licensePlate ?? '',
+      capacity: u.capacity ?? 1
+    };
+  }
+
+  cancelEdit() {
+    this.editingUser.set(null);
+  }
+
+  saveEdit() {
+    const u = this.editingUser();
+    if (!u) return;
+    this.http
+      .put(`http://localhost:8080/api/admin/users/${u.id}`, {
+        name: this.editModel.name,
+        phone: this.editModel.phone,
+        role: this.editModel.role,
+        blocked: this.editModel.blocked,
+        driverVerified: this.editModel.driverVerified,
+        vehicleModel: this.editModel.vehicleModel,
+        licensePlate: this.editModel.licensePlate,
+        capacity: this.editModel.capacity
+      })
+      .subscribe({
+        next: () => {
+          this.editingUser.set(null);
+          this.refreshAll();
+        },
+        error: () => this.error.set('Failed to update user')
+      });
+  }
+
+  deleteUser(u: User) {
+    if (!confirm(`Delete user ${u.email}? This cannot be undone.`)) {
+      return;
+    }
+    this.http.delete(`http://localhost:8080/api/admin/users/${u.id}`).subscribe({
+      next: () => this.refreshAll(),
+      error: () => this.error.set('Failed to delete user')
+    });
   }
 }
 
